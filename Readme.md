@@ -1,7 +1,7 @@
 # Личный проект «TaskForce»
 
 * Студент: [Вадим Корабельник](https://up.htmlacademy.ru/yii/1/user/20008).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег Мифле](https://htmlacademy.ru/profile/id496565).
 
 ---
 
