@@ -1,0 +1,17 @@
+{
+    "name": "vadimkorabelnik/20008-task-force-1",
+    "description": "HTML Academy Task Force project",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Vadim Korabelnik",
+            "email": "vad@oblako9.ru"
+        }
+    ],
+    "require": {},
+    "autoload": {
+      "psr-4": {
+        "TaskForce\\": "src/"
+      }
+    }
+}
