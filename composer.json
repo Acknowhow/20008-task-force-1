@@ -1,6 +1,7 @@
 {
     "name": "vadimkorabelnik/20008-task-force-1",
     "description": "HTML Academy Task Force project",
+    "minimum-stability": "dev",
     "type": "project",
     "authors": [
         {
