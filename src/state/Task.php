@@ -1,6 +1,6 @@
 <?php
 namespace TaskForce\state;
-use function TaskForce\helpers\key_compare;
+require_once './src/helpers/helpers.php';
 
 class Task
 {
@@ -84,9 +84,8 @@ class Task
             $currentActions = self::USER_ACTIONS[$this->activeState];
             $availableActions = $this->getAvailableActions();
 
-            return key_compare(1, 2);
 
-//            return array_intersect_ukey($availableActions, $currentActions, 'helpers\key_compare_func');
+            return array_intersect_ukey($availableActions, $currentActions, 'keyCompare');
         }
     }
 
