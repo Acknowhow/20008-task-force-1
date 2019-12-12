@@ -28,7 +28,7 @@ class Task
         'USER_CONTRACTOR' => 'CONTRACTOR'
     ];
 
-    private const USER_ACTIONS = [
+    const USER_ACTIONS = [
         'IS_NEW' => ['ACTION_CANCEL', 'ACTION_APPLY'],
         'IN_PROGRESS' => ['ACTION_ACCEPT', 'ACTION_DECLINE']
     ];
@@ -57,9 +57,11 @@ class Task
         }
     }
 
-    public function getAvailableActions()
+    public function setNextState($state)
     {
-        return self::AVAILABLE_ACTIONS[$this->activeRole];
+
+        $this->activeState = self::AVAILABLE_STATES[$state];
+        return $this->activeState;
     }
 
     public function getNextState($action)
@@ -70,22 +72,30 @@ class Task
             return 'Недопустимое действие';
         }
 
-        $this->activeState = $actions[$action];
-
         return $actions[$action];
     }
 
+    public function getAvailableActions()
+    {
+        return self::AVAILABLE_ACTIONS[$this->activeRole];
+    }
+
+    // Returns array keys intersection
+    // by comparing associative and plain
+    // array with additional key check
     public function getCurrentlyAvailableActions()
     {
         if (!isset(self::USER_ACTIONS[$this->activeState])) {
             return 'Задача неактивна';
 
         } else {
-            $currentActions = self::USER_ACTIONS[$this->activeState];
             $availableActions = $this->getAvailableActions();
+            $currentActions = self::USER_ACTIONS[$this->activeState];
 
+            var_dump($currentActions);
 
-            return array_intersect_ukey($availableActions, $currentActions, 'keyCompare');
+            return array_keys(array_intersect_ukey($availableActions,
+                $currentActions, 'keyCompare'));
         }
     }
 
