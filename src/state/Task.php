@@ -1,6 +1,5 @@
 <?php
 namespace TaskForce\state;
-require_once './src/helpers/helpers.php';
 
 class Task
 {
@@ -89,13 +88,12 @@ class Task
             return 'Задача неактивна';
 
         } else {
-            $availableActions = $this->getAvailableActions();
+            $availableActionsList = array_keys($this->getAvailableActions());
+
             $currentActions = self::USER_ACTIONS[$this->activeState];
 
-            var_dump($currentActions);
-
-            return array_keys(array_intersect_ukey($availableActions,
-                $currentActions, 'keyCompare'));
+            return array_values(array_intersect($availableActionsList,
+                $currentActions));
         }
     }
 

@@ -20,10 +20,10 @@ assert($task->setNextState('STATE_PROGRESS') ==
     Task::AVAILABLE_STATES['STATE_PROGRESS'],
     'IN_PROGRESS');
 
+assert($task->getActiveState() ==
+    Task::AVAILABLE_STATES['STATE_PROGRESS'], 'IS_PROGRESS');
 
-$task->getCurrentlyAvailableActions();
-
-
-//var_dump('activeState is', $task->getActiveState());
+assert($task->getCurrentlyAvailableActions() ==
+    ['ACTION_DECLINE']);
 
 
