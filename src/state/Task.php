@@ -3,6 +3,11 @@ namespace TaskForce\state;
 
 class Task
 {
+
+    const ACTIVE_STATE = 'STATE_NEW';
+    const USER_ROLE = 'CONTRACTOR';
+    const USER_ID = 123;
+
     const AVAILABLE_ACTIONS = [
         'CLIENT' => [
             'ACTION_ACCEPT' => 'STATE_ACCOMPLISH',
