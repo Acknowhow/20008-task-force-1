@@ -2,9 +2,11 @@
 use TaskForce\state\Task;
 require_once __DIR__ . '/vendor/autoload.php';
 
+const USER_ID = 123;
+
 $task = new Task(
     Task::ACTIVE_STATE,
-    Task::USER_ROLE, Task::USER_ID);
+    Task::USER_ROLE, USER_ID);
 
 assert($task->getCurrentlyAvailableActions() ==
     ['ACTION_APPLY']);
