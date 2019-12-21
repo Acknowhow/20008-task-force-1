@@ -1,5 +1,5 @@
 <?php
-namespace TaskForce\state;
+namespace TaskForce\validators;
 
 class Task
 {

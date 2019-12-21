@@ -1,5 +1,5 @@
 <?php
-use TaskForce\state\Task;
+use TaskForce\validators\Task;
 require_once __DIR__ . '/vendor/autoload.php';
 
 const USER_ID = 123;
