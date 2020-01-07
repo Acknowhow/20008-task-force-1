@@ -1,5 +1,5 @@
 <?php
-use TaskForce\validators\Task;
+use TaskForce\models\task\Task;
 require_once __DIR__ . '/vendor/autoload.php';
 
 const USER_ID = 123;
@@ -16,16 +16,14 @@ assert($task->getActiveState() ==
 
 assert($task->getNextState('ACTION_APPLY') ==
     Task::AVAILABLE_ACTIONS[Task::USER_ROLE]['ACTION_APPLY'],
-    'STATE PROGRESS');
+    'STATE_NEW');
 
 assert($task->setNextState('STATE_PROGRESS') ==
     Task::AVAILABLE_STATES['STATE_PROGRESS'],
     'IN_PROGRESS');
 
 assert($task->getActiveState() ==
-    Task::AVAILABLE_STATES['STATE_PROGRESS'], 'IS_PROGRESS');
+    Task::AVAILABLE_STATES['STATE_PROGRESS'], 'IN_PROGRESS');
 
-assert($task->getCurrentlyAvailableActions() ==
-    ['ACTION_DECLINE']);
 
 

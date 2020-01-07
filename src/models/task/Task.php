@@ -1,5 +1,6 @@
 <?php
-namespace TaskForce\validators;
+namespace TaskForce\models\task;
+use TaskForce\models\task\visitor\concrete\AbstractAction;
 
 class Task
 {
@@ -8,11 +9,12 @@ class Task
 
     const AVAILABLE_ACTIONS = [
         'CLIENT' => [
-            'ACTION_ACCEPT' => 'STATE_ACCOMPLISH',
+            'ACTION_ACCEPT' => 'STATE_PROGRESS',
+            'ACTION_COMPLETE' => 'STATE_ACCOMPLISH',
             'ACTION_CANCEL' => 'STATE_CANCEL'
         ],
         'CONTRACTOR' => [
-            'ACTION_APPLY' => 'STATE_PROGRESS',
+            'ACTION_APPLY' => 'STATE_NEW',
             'ACTION_DECLINE' => 'STATE_FAIL'
         ]
     ];
@@ -25,23 +27,24 @@ class Task
         'STATE_FAIL' => 'IS_FAILED'
     ];
 
-    const USER_ROLES = [
-        'USER_CLIENT' => 'CLIENT',
-        'USER_CONTRACTOR' => 'CONTRACTOR'
-    ];
-
     const USER_ACTIONS = [
-        'IS_NEW' => ['ACTION_CANCEL', 'ACTION_APPLY'],
+        'IS_NEW' => [
+            'ACTION_ACCEPT', 'ACTION_CANCEL',
+            'ACTION_COMPLETE', 'ACTION_APPLY'
+        ],
         'IN_PROGRESS' => ['ACTION_ACCEPT', 'ACTION_DECLINE']
     ];
 
     private $contractorId = null;
     private $clientId = null;
-    private $completionDate = null;
 
     private $activeRole = '';
     private $activeState = '';
 
+    /**
+     * @var AbstractAction[] $actions
+     */
+    private $actions = [];
 
     public function __construct($activeState, $userRole,
                                 $clientId, $contractorId = null)
@@ -49,20 +52,19 @@ class Task
         $this->activeState = self::AVAILABLE_STATES[$activeState];
         $this->activeRole = $userRole;
 
-        if ($userRole == self::USER_ROLES['USER_CONTRACTOR'])
-        {
-            $this->clientId = $clientId;
-        }
+        $this->clientId = $clientId;
+        $this->contractorId = $contractorId;
 
-        else if ($userRole == self::USER_ROLES['USER_CLIENT'])
-        {
-            $this->contractorId = $userId;
-        }
     }
 
+    public function addValidator(AbstractAction $action)
+    {
+        $this->actions[] = $action;
+    }
+
+    //** SetNextState with available action classes */
     public function setNextState($state)
     {
-
         $this->activeState = self::AVAILABLE_STATES[$state];
         return $this->activeState;
     }
@@ -78,26 +80,26 @@ class Task
         return $actions[$action];
     }
 
+    // Gets userRole
     public function getAvailableActions()
     {
         return self::AVAILABLE_ACTIONS[$this->activeRole];
     }
 
-    // Returns array keys intersection
-    // by comparing associative and plain
-    // array with additional key check
     public function getCurrentlyAvailableActions()
     {
         if (!isset(self::USER_ACTIONS[$this->activeState])) {
+            // ** Throw error ** //
             return 'Задача неактивна';
 
         } else {
             $availableActionsList = array_keys($this->getAvailableActions());
-
             $currentActions = self::USER_ACTIONS[$this->activeState];
 
             return array_values(array_intersect($availableActionsList,
                 $currentActions));
+
+            // ** Add ActionClass for each key in resulting array ** //
         }
     }
 
