@@ -43,14 +43,15 @@ class Task
     private $activeState = '';
 
 
-    public function __construct($activeState, $userRole, $userId)
+    public function __construct($activeState, $userRole,
+                                $clientId, $contractorId = null)
     {
         $this->activeState = self::AVAILABLE_STATES[$activeState];
         $this->activeRole = $userRole;
 
         if ($userRole == self::USER_ROLES['USER_CONTRACTOR'])
         {
-            $this->clientId = $userId;
+            $this->clientId = $clientId;
         }
 
         else if ($userRole == self::USER_ROLES['USER_CLIENT'])
