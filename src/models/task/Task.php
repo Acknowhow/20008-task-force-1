@@ -4,19 +4,12 @@ use TaskForce\models\task\visitor\concrete\AbstractAction;
 
 class Task
 {
-    const ACTIVE_STATE = 'STATE_NEW';
-    const USER_ROLE = 'CONTRACTOR';
-
     const AVAILABLE_ACTIONS = [
-        'CLIENT' => [
-            'ACTION_ACCEPT' => 'STATE_PROGRESS',
-            'ACTION_COMPLETE' => 'STATE_ACCOMPLISH',
-            'ACTION_CANCEL' => 'STATE_CANCEL'
-        ],
-        'CONTRACTOR' => [
-            'ACTION_APPLY' => 'STATE_NEW',
-            'ACTION_DECLINE' => 'STATE_FAIL'
-        ]
+        'ACTION_ACCEPT' => 'STATE_PROGRESS',
+        'ACTION_COMPLETE' => 'STATE_ACCOMPLISH',
+        'ACTION_CANCEL' => 'STATE_CANCEL',
+        'ACTION_APPLY' => 'STATE_NEW',
+        'ACTION_DECLINE' => 'STATE_FAIL'
     ];
 
     const AVAILABLE_STATES = [
@@ -29,37 +22,33 @@ class Task
 
     const USER_ACTIONS = [
         'IS_NEW' => [
-            'ACTION_ACCEPT', 'ACTION_CANCEL',
-            'ACTION_COMPLETE', 'ACTION_APPLY'
+            'ACTION_APPLY', 'ACTION_ACCEPT', 'ACTION_CANCEL'
         ],
-        'IN_PROGRESS' => ['ACTION_ACCEPT', 'ACTION_DECLINE']
+        'IN_PROGRESS' => [
+            'ACTION_COMPLETE', 'ACTION_DECLINE'
+        ]
     ];
 
-    private $contractorId = null;
-    private $clientId = null;
-
-    private $activeRole = '';
+    private $ids = [];
     private $activeState = '';
 
     /**
      * @var AbstractAction[] $actions
      */
-    private $actions = [];
+    private $actionValidators = [];
 
-    public function __construct($activeState, $userRole,
-                                $clientId, $contractorId = null)
+    public function __construct($activeState, $ids = [
+        'USER_ID' => null, 'CLIENT_ID' => null,
+        'CONTRACTOR_ID' => null
+    ])
     {
         $this->activeState = self::AVAILABLE_STATES[$activeState];
-        $this->activeRole = $userRole;
-
-        $this->clientId = $clientId;
-        $this->contractorId = $contractorId;
-
+        $this->ids = $ids;
     }
 
-    public function addValidator(AbstractAction $action)
+    public function addActionValidator(AbstractAction $action)
     {
-        $this->actions[] = $action;
+        $this->actionValidators[] = $action;
     }
 
     //** SetNextState with available action classes */
@@ -71,35 +60,31 @@ class Task
 
     public function getNextState($action)
     {
-        $actions = $this->getAvailableActions();
-        if (!isset($actions[$action])) {
-
-            return 'Недопустимое действие';
-        }
-
-        return $actions[$action];
+        return self::AVAILABLE_ACTIONS[$action] ?? 'Недопустимое действие';
     }
 
-    // Gets userRole
     public function getAvailableActions()
     {
-        return self::AVAILABLE_ACTIONS[$this->activeRole];
-    }
+        $availableActions = self::USER_ACTIONS[$this->activeState] ?? null;
 
-    public function getCurrentlyAvailableActions()
-    {
         if (!isset(self::USER_ACTIONS[$this->activeState])) {
             // ** Throw error ** //
             return 'Задача неактивна';
 
         } else {
-            $availableActionsList = array_keys($this->getAvailableActions());
-            $currentActions = self::USER_ACTIONS[$this->activeState];
+            $filteredArray = [];
+            foreach ($availableActions as $availableAction) {
+                foreach ($this->actionValidators as $actionValidator) {
 
-            return array_values(array_intersect($availableActionsList,
-                $currentActions));
+                    if ($actionValidator->getUserActionName() ==
+                        $availableAction) {
 
-            // ** Add ActionClass for each key in resulting array ** //
+                        $filteredArray[] = $availableAction;
+                    }
+
+                }
+            }
+            return $filteredArray;
         }
     }
 
