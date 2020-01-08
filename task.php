@@ -12,8 +12,8 @@ const USER_IDS = [
     'USER_ID' => 123, 'CLIENT_ID' => null,
     'CONTRACTOR_ID' => 123
 ];
-const ACTIVE_STATE = 'STATE_NEW';
-$task = new Task(ACTIVE_STATE, USER_IDS);
+const ACTIVE_STATUS = 'STATUS_NEW';
+$task = new Task(ACTIVE_STATUS, USER_IDS);
 
 $task->addActionValidator(new CompleteAction(USER_IDS));
 $task->addActionValidator(new AcceptAction(USER_IDS));
@@ -25,14 +25,14 @@ assert($task->getAvailableActions() ==
     ['ACTION_APPLY']);
 
 assert($task->getActiveState() ==
-    Task::AVAILABLE_STATES['STATE_NEW'], 'IS_NEW');
+    Task::AVAILABLE_STATUSES['STATUS_NEW'], 'IS_NEW');
 
 assert($task->getNextState('ACTION_APPLY') ==
     Task::AVAILABLE_ACTIONS['ACTION_APPLY'],
-    'STATE_NEW');
+    'STATUS_NEW');
 
-assert($task->setNextState('STATE_NEW') ==
-    Task::AVAILABLE_STATES['STATE_NEW'],
+assert($task->setNextState('STATUS_NEW') ==
+    Task::AVAILABLE_STATUSES['STATUS_NEW'],
     'IS_NEW');
 
 

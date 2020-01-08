@@ -5,19 +5,19 @@ use TaskForce\models\task\visitor\concrete\AbstractAction;
 class Task
 {
     const AVAILABLE_ACTIONS = [
-        'ACTION_ACCEPT' => 'STATE_PROGRESS',
-        'ACTION_COMPLETE' => 'STATE_ACCOMPLISH',
-        'ACTION_CANCEL' => 'STATE_CANCEL',
-        'ACTION_APPLY' => 'STATE_NEW',
-        'ACTION_DECLINE' => 'STATE_FAIL'
+        'ACTION_ACCEPT' => 'STATUS_PROGRESS',
+        'ACTION_COMPLETE' => 'STATUS_ACCOMPLISH',
+        'ACTION_CANCEL' => 'STATUS_CANCEL',
+        'ACTION_APPLY' => 'STATUS_NEW',
+        'ACTION_DECLINE' => 'STATUS_FAIL'
     ];
 
-    const AVAILABLE_STATES = [
-        'STATE_NEW' => 'IS_NEW',
-        'STATE_PROGRESS' => 'IN_PROGRESS',
-        'STATE_CANCEL' => 'IS_CANCELLED',
-        'STATE_ACCOMPLISH' => 'IS_FINISHED',
-        'STATE_FAIL' => 'IS_FAILED'
+    const AVAILABLE_STATUSES = [
+        'STATUS_NEW' => 'IS_NEW',
+        'STATUS_PROGRESS' => 'IN_PROGRESS',
+        'STATUS_CANCEL' => 'IS_CANCELLED',
+        'STATUS_ACCOMPLISH' => 'IS_FINISHED',
+        'STATUS_FAIL' => 'IS_FAILED'
     ];
 
     const USER_ACTIONS = [
@@ -29,20 +29,23 @@ class Task
         ]
     ];
 
-    private $ids = [];
-    private $activeState = '';
+    private array $ids = [];
+    private string $activeStatus = '';
 
     /**
      * @var AbstractAction[] $actions
      */
-    private $actionValidators = [];
+    private array $actionValidators = [];
 
-    public function __construct($activeState, $ids = [
+    public function __construct(string $activeStatus, array $ids = [
         'USER_ID' => null, 'CLIENT_ID' => null,
         'CONTRACTOR_ID' => null
     ])
     {
-        $this->activeState = self::AVAILABLE_STATES[$activeState];
+        if (empty($activeStatus) || !is_string($activeStatus)) {
+
+        }
+        $this->activeStatus = self::AVAILABLE_STATUSES[$activeStatus];
         $this->ids = $ids;
     }
 
@@ -54,8 +57,8 @@ class Task
     //** SetNextState with available action classes */
     public function setNextState($state)
     {
-        $this->activeState = self::AVAILABLE_STATES[$state];
-        return $this->activeState;
+        $this->activeStatus = self::AVAILABLE_STATUSES[$state];
+        return $this->activeStatus;
     }
 
     public function getNextState($action)
@@ -65,9 +68,9 @@ class Task
 
     public function getAvailableActions()
     {
-        $availableActions = self::USER_ACTIONS[$this->activeState] ?? null;
+        $availableActions = self::USER_ACTIONS[$this->activeStatus] ?? null;
 
-        if (!isset(self::USER_ACTIONS[$this->activeState])) {
+        if (!isset(self::USER_ACTIONS[$this->activeStatus])) {
             // ** Throw error ** //
             return 'Задача неактивна';
 
@@ -90,6 +93,6 @@ class Task
 
     public function getActiveState()
     {
-        return $this->activeState;
+        return $this->activeStatus;
     }
 }
