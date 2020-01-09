@@ -5,7 +5,7 @@ use TaskForce\models\task\visitor\concrete\AbstractAction;
 class CompleteAction extends AbstractAction
 {
     const NAME = 'ACTION_COMPLETE';
-    private $ids = [];
+    private array $ids = [];
 
     public function __construct($ids = [
         'USER_ID' => null,
@@ -16,18 +16,18 @@ class CompleteAction extends AbstractAction
         $this->ids = $ids;
     }
 
-    public function checkAuth()
+    public function checkAuth(): bool
     {
         return $this->ids['USER_ID'] ==
             $this->ids['CLIENT_ID'];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }
 
-    public function getUserActionName()
+    public function getUserActionName(): string
     {
         if (self::checkAuth()) {
             return self::NAME;
