@@ -1,6 +1,8 @@
 <?php
 namespace TaskForce\models\task;
 use TaskForce\models\task\visitor\concrete\AbstractAction;
+use TaskForce\exceptions\TaskArgumentException;
+use TaskForce\exceptions\TaskActionException;
 
 class Task
 {
@@ -43,36 +45,44 @@ class Task
     ])
     {
         if (empty($activeStatus) || !is_string($activeStatus)) {
-
+            throw new TaskArgumentException('
+            Значение статуса в задаче должно быть непустой строкой');
         }
+
+        if (empty($ids) || !is_array($ids)) {
+            throw new TaskArgumentException('
+            Значение ids должно быть непустым массивом');
+        }
+
         $this->activeStatus = self::AVAILABLE_STATUSES[$activeStatus];
         $this->ids = $ids;
     }
 
-    public function addActionValidator(AbstractAction $action)
+    public function addActionValidator(AbstractAction $action): void
     {
         $this->actionValidators[] = $action;
     }
 
     //** SetNextState with available action classes */
-    public function setNextState($state)
+    public function setNextStatus($status): string
     {
-        $this->activeStatus = self::AVAILABLE_STATUSES[$state];
+        $this->activeStatus = self::AVAILABLE_STATUSES[$status];
         return $this->activeStatus;
     }
 
-    public function getNextState($action)
+    public function getNextState($action): ?string
     {
-        return self::AVAILABLE_ACTIONS[$action] ?? 'Недопустимое действие';
+        return self::AVAILABLE_ACTIONS[$action] ?? null;
     }
 
-    public function getAvailableActions()
+    public function getAvailableActions(): array
     {
         $availableActions = self::USER_ACTIONS[$this->activeStatus] ?? null;
 
-        if (!isset(self::USER_ACTIONS[$this->activeStatus])) {
-            // ** Throw error ** //
-            return 'Задача неактивна';
+        if (!isset($availableActions)) {
+
+            throw new TaskActionException('
+            Для текущей задачи нет доступных действий');
 
         } else {
             $filteredArray = [];
@@ -91,7 +101,7 @@ class Task
         }
     }
 
-    public function getActiveState()
+    public function getActiveState(): string
     {
         return $this->activeStatus;
     }
