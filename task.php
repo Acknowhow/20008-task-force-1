@@ -20,8 +20,8 @@ const ACTIVE_STATUS = 'STATUS_NEW';
 try {
     $task = new Task(ACTIVE_STATUS, USER_IDS);
 }
-catch (TaskArgumentException $e) {
-    print("Ошибка:" . $e->getMessage());
+catch (TaskArgumentException $error) {
+    print("Ошибка:" . $error->getMessage());
     die();
 }
 
@@ -36,8 +36,8 @@ try {
     assert($task->getAvailableActions() ==
         ['ACTION_APPLY']);
 }
-catch (TaskActionException $e) {
-    print("Ошибка:" . $e->getMessage());
+catch (TaskActionException $error) {
+    print("Ошибка:" . $error->getMessage());
     die();
 }
 
