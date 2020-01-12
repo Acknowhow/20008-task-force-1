@@ -2,18 +2,19 @@
 declare(strict_types=1);
 
 ini_set('display_errors', 'On');
+ini_set('error_log', __DIR__ . '/error.log');
 error_reporting(E_ALL);
+mysqli_report(MYSQLI_REPORT_STRICT | MYSQLI_REPORT_ERROR);
 
 use TaskForce\utils\FileLoader;
+use TaskForce\utils\DatabaseHelper;
 use TaskForce\exceptions\SourceFileException;
 use TaskForce\exceptions\FileFormatException;
 
+require_once 'helpers/helpers.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
-/** Make loader iterator */
-
 const MIN_ID = 1;
-
 $data_array = [];
 
 $loader_parameters = [
@@ -35,7 +36,6 @@ $loader = new FileLoader(__DIR__ . '/data/categories.csv',
     ['name', 'icon']);
 
 foreach ($loader_parameters as $directory => $columns ) {
-
     $loader = new FileLoader(__DIR__ . $directory, $columns);
 
     try {
@@ -52,6 +52,10 @@ foreach ($loader_parameters as $directory => $columns ) {
     $directory = substr($directory, 6, -4);
     $data_array[$directory] = $file;
 }
+
+/**
+ * Adding random cities_ids into users array
+ */
 $cities_count = count($data_array['cities']);
 $cities_ids = range(MIN_ID, $cities_count);
 
@@ -63,7 +67,31 @@ foreach ($data_array['users'] as $user => $userValue) {
         $cities_ids[rand(MIN_ID, $cities_count - 1)];
 }
 
-var_dump($data_array['users']);
+/**
+ * Adding client_ids and contractor_ids into tasks
+ */
+$users_count = count($data_array['users']);
+$users_ids = range(MIN_ID, $users_count);
+
+shuffle($users_ids);
+
+foreach ($data_array['tasks'] as $task => $taskValue) {
+    $userId = rand(MIN_ID, $users_count - 1);
+
+    $data_array['tasks'][$task][] = $userId;
+    $data_array['tasks'][$task][] = generateUniqueRandomNumber(
+        MIN_ID, $users_count, $userId);
+}
+
+//** Categories glued */
+//var_dump(implode(', ', $loader_parameters['/data/categories.csv']));
+
+
+try {
+    $connect = new DatabaseHelper('localhost','root','testpassword2021a', 'task_force');
+} catch (Exception $error) {
+    error_log($error->getMessage());
+}
 
 /** Run iterator through each parameter in array */
 
