@@ -29,7 +29,6 @@ class FileLoader
         if (!$this->validateColumns($this->columns)) {
             throw new FileFormatException('Заданы неверные заголовки столбцов');
         }
-
         /**
          *** Check if file exists
          */
@@ -45,9 +44,10 @@ class FileLoader
 
         $header_data = $this->getHeaderData();
 
-        if ($header_data !== $this->columns) {
+        if (count($header_data) !== count($this->columns)) {
             throw new FileFormatException('Исходный файл не содержит необходимых столбцов');
         }
+
 
         while ($line = $this->getNextLine()) {
             $this->result[] = $line;
@@ -90,7 +90,6 @@ class FileLoader
         else {
             $result = false;
         }
-
         return $result;
     }
 }

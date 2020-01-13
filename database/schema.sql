@@ -1,3 +1,4 @@
+DROP DATABASE task_force;
 CREATE DATABASE task_force CHARACTER SET utf8;
 USE task_force;
 SET FOREIGN_KEY_CHECKS=0;

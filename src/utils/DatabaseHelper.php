@@ -2,12 +2,13 @@
 declare(strict_types=1);
 
 namespace TaskForce\utils;
+require_once 'helpers/functions.php';
 
 class DatabaseHelper
 {
     private object $db_resource;
     private $last_error = null;
-    private $last_result;
+    private \mysqli_result $last_result;
 
     public function __construct($host, $login, $password, $db)
     {
@@ -20,35 +21,19 @@ class DatabaseHelper
         }
     }
 
-    public function executeQuery($sql, $data = []) {
-        $this->last_error = null;
-
+    public function executeQuery($sql, $data = []): void {
         $stmt = db_get_prepare_stmt($this->db_resource, $sql, $data);
 
+        try {
+            mysqli_stmt_execute($stmt) && $result =
+                mysqli_stmt_get_result($stmt);
 
+        } catch (\mysqli_sql_exception $error) {
 
-        if (mysqli_stmt_execute($stmt) &&
-            $result = mysqli_stmt_get_result($stmt)) {
-
-            $this->last_result = $result;
-
-            $res = true;
-
-        } else {
-            $this->last_error = mysqli_error($this->db_resource);
-            $res = false;
+            throw $error;
         }
-
-        return $res;
     }
 
-    public function executeSafeQuery($sql) {
-        mysqli_query($this->db_resource, $sql);
-    }
-
-    public function getLastError() {
-        return $this->last_error;
-    }
 
     public function getArrayByColumnName($columnName) {
         $arr = [];

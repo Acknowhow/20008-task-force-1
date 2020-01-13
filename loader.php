@@ -11,8 +11,9 @@ use TaskForce\utils\DatabaseHelper;
 use TaskForce\exceptions\SourceFileException;
 use TaskForce\exceptions\FileFormatException;
 
-require_once 'helpers/helpers.php';
-require_once __DIR__ . '/vendor/autoload.php';
+require_once 'helpers/functions.php';
+require_once 'helpers/queries.php';
+require_once 'vendor/autoload.php';
 
 const MIN_ID = 1;
 $data_array = [];
@@ -43,10 +44,12 @@ foreach ($loader_parameters as $directory => $columns ) {
         $file = $loader->getData();
     }
     catch (SourceFileException $error) {
-        error_log("Не удалось обработать csv файл: " . $error->getMessage());
+        error_log("Не удалось обработать csv файл: " .
+            $error->getMessage());
     }
     catch (FileFormatException $error) {
-        error_log("Неверная форма файла импорта: " . $error->getMessage());
+        error_log("Неверная форма файла импорта: " .
+            $error->getMessage());
     }
 
     $directory = substr($directory, 6, -4);
@@ -58,7 +61,6 @@ foreach ($loader_parameters as $directory => $columns ) {
  */
 $cities_count = count($data_array['cities']);
 $cities_ids = range(MIN_ID, $cities_count);
-
 shuffle($cities_ids);
 
 foreach ($data_array['users'] as $user => $userValue) {
@@ -66,13 +68,11 @@ foreach ($data_array['users'] as $user => $userValue) {
     $data_array['users'][$user][] =
         $cities_ids[rand(MIN_ID, $cities_count - 1)];
 }
-
 /**
  * Adding client_ids and contractor_ids into tasks
  */
 $users_count = count($data_array['users']);
 $users_ids = range(MIN_ID, $users_count);
-
 shuffle($users_ids);
 
 foreach ($data_array['tasks'] as $task => $taskValue) {
@@ -83,17 +83,39 @@ foreach ($data_array['tasks'] as $task => $taskValue) {
         MIN_ID, $users_count, $userId);
 }
 
-//** Categories glued */
-//var_dump(implode(', ', $loader_parameters['/data/categories.csv']));
-
-
 try {
-    $connect = new DatabaseHelper('localhost','root','testpassword2021a', 'task_force');
+    $connect = new DatabaseHelper('localhost','root',
+        'testpassword2021', 'task_force');
+
+    $connect->executeQuery($tasks_drop_sql);
+    $connect->executeQuery($users_drop_sql);
+    $connect->executeQuery($cities_drop_sql);
+    $connect->executeQuery($categories_drop_sql);
+
+    $connect->executeQuery($categories_create_sql);
+    $connect->executeQuery($cities_create_sql);
+    $connect->executeQuery($users_create_sql);
+    $connect->executeQuery($tasks_create_sql);
+
+    foreach ($data_array['categories'] as $category) {
+        $connect->executeQuery($categories_insert_sql, $category);
+    }
+
+    foreach ($data_array['cities'] as $city) {
+        $connect->executeQuery($cities_insert_sql, $city);
+    }
+
+    foreach ($data_array['users'] as $user) {
+        $connect->executeQuery($users_insert_sql, $user);
+    }
+
+    foreach ($data_array['tasks'] as $task) {
+        $connect->executeQuery($tasks_insert_sql, $task);
+    }
+
 } catch (Exception $error) {
     error_log($error->getMessage());
 }
-
-/** Run iterator through each parameter in array */
 
 
 
