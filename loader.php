@@ -83,6 +83,8 @@ foreach ($data_array['tasks'] as $task => $taskValue) {
         MIN_ID, $users_count, $userId);
 }
 
+var_dump($data_array);
+
 try {
     $connect = new DatabaseHelper('localhost','root',
         'testpassword2021', 'task_force');
