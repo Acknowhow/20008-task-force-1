@@ -7,7 +7,7 @@
  * @param $current int integer to compare against
  * @return int $number
  */
-function generateUniqueRandomNumber(int $min, int $max, int $current)
+function generateUniqueRandomNumber(int $min, int $max, int $current): int
 {
     while ($number = rand($min, $max)) {
         if ($number !== $current) {
@@ -25,7 +25,7 @@ function generateUniqueRandomNumber(int $min, int $max, int $current)
  *
  * @return mysqli_stmt Prepared statement
  */
-function db_get_prepare_stmt(mysqli $link, string $sql, array $data = [])
+function db_get_prepare_stmt(mysqli $link, string $sql, array $data = []): mysqli_stmt
 {
     try {
         $stmt = mysqli_prepare($link, $sql);

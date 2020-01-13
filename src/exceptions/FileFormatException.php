@@ -1,5 +1,5 @@
 <?php
-namespace TaskForce\exceptions;
+namespace TaskForce\Exceptions;
 
 class FileFormatException extends \Exception
 {

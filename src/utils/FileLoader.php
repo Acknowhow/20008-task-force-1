@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace TaskForce\utils;
+namespace TaskForce\Utils;
 
-use TaskForce\exceptions\FileFormatException;
-use TaskForce\exceptions\SourceFileException;
+use TaskForce\Exceptions\FileFormatException;
+use TaskForce\Exceptions\SourceFileException;
 
 class FileLoader
 {
@@ -48,35 +48,38 @@ class FileLoader
             throw new FileFormatException('Исходный файл не содержит необходимых столбцов');
         }
 
+        foreach ($this->getNextLine() as $line) {
 
-        while ($line = $this->getNextLine()) {
-            $this->result[] = $line;
+            if ($line) {
+                $this->result[] = $line;
+            }
         }
     }
 
-    public function getData():array {
+    public function getData(): array
+    {
         return $this->result;
     }
 
-    private function getHeaderData():?array
+    private function getHeaderData(): array
     {
         rewind($this->fp);
-
         return fgetcsv($this->fp);
     }
 
-    private function getNextLine()
+    private function getNextLine(): ?iterable
     {
+
         $result = null;
 
-        if (!feof($this->fp)) {
-            $result = fgetcsv($this->fp);
+        while (!feof($this->fp)) {
+            yield fgetcsv($this->fp);
         }
-
         return $result;
+
     }
 
-    private function validateColumns(array $columns):bool
+    private function validateColumns(array $columns): bool
     {
         $result = true;
 

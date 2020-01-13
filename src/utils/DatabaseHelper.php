@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace TaskForce\utils;
+namespace TaskForce\Utils;
 require_once 'helpers/functions.php';
 
 class DatabaseHelper
 {
     private object $db_resource;
-    private $last_error = null;
     private \mysqli_result $last_result;
 
-    public function __construct($host, $login, $password, $db)
+    public function __construct(
+        string $host, string $login, string $password, string $db)
     {
         try {
             $this->db_resource = new \mysqli($host, $login, $password, $db);
@@ -35,13 +35,12 @@ class DatabaseHelper
     }
 
 
-    public function getArrayByColumnName($columnName) {
+    public function getArrayByColumnName($columnName): array {
         $arr = [];
 
         while ($row = mysqli_fetch_assoc($this->last_result)) {
             $arr[] = $row[$columnName];
         };
-
 
         return $arr;
     }

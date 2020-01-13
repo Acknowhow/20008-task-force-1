@@ -6,10 +6,10 @@ ini_set('error_log', __DIR__ . '/error.log');
 error_reporting(E_ALL);
 mysqli_report(MYSQLI_REPORT_STRICT | MYSQLI_REPORT_ERROR);
 
-use TaskForce\utils\FileLoader;
-use TaskForce\utils\DatabaseHelper;
-use TaskForce\exceptions\SourceFileException;
-use TaskForce\exceptions\FileFormatException;
+use TaskForce\Utils\FileLoader;
+use TaskForce\Utils\DatabaseHelper;
+use TaskForce\Exceptions\SourceFileException;
+use TaskForce\Exceptions\FileFormatException;
 
 require_once 'helpers/functions.php';
 require_once 'helpers/queries.php';

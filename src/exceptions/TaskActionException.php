@@ -1,5 +1,5 @@
 <?php
-namespace TaskForce\exceptions;
+namespace TaskForce\Exceptions;
 
 class TaskActionException extends \Exception
 {
