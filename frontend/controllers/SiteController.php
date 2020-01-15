@@ -257,4 +257,14 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+
+    /**
+     * Says hi
+     * @param string $message
+     * @return mixed
+     */
+    public function actionSay($message = 'Hello')
+    {
+        return $this->render('say', ['message' => $message]);
+    }
 }

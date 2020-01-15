@@ -9,7 +9,7 @@ use TaskForce\models\task\Task;
 use TaskForce\exceptions\TaskArgumentException;
 use TaskForce\exceptions\TaskActionException;
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 const USER_IDS = [
     'USER_ID' => 123, 'CLIENT_ID' => null,
