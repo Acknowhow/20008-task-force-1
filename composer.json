@@ -9,7 +9,9 @@
             "email": "vad@oblako9.ru"
         }
     ],
-    "require": {},
+    "require": {
+      "ext-mysqli": "*"
+    },
     "autoload": {
       "psr-4": {
         "TaskForce\\": "src/"

@@ -1,6 +1,6 @@
 <?php
-namespace TaskForce\models\task\visitor;
-use TaskForce\models\task\visitor\concrete\AbstractAction;
+namespace TaskForce\Models\Task\Visitor;
+use TaskForce\Models\Task\Visitor\Concrete\AbstractAction;
 
 class DeclineAction extends AbstractAction
 {
