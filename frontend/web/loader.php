@@ -14,6 +14,7 @@ use TaskForce\exceptions\FileFormatException;
 require_once __DIR__ . '/../../helpers/functions.php';
 require_once __DIR__ . '/../../helpers/queries.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/database/credentials.php';
 
 
 const MIN_ID = 1;

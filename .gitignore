@@ -6,6 +6,9 @@ yii_test.bat
 # phpstorm project files
 .idea
 
+# db credentials
+frontend/web/database/credentials.php
+
 # netbeans project files
 nbproject
 
