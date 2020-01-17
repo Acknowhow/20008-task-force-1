@@ -8,12 +8,13 @@ mysqli_report(MYSQLI_REPORT_STRICT | MYSQLI_REPORT_ERROR);
 
 use TaskForce\Utils\FileLoader;
 use TaskForce\Utils\DatabaseHelper;
-use TaskForce\Exceptions\SourceFileException;
-use TaskForce\Exceptions\FileFormatException;
+use TaskForce\exceptions\SourceFileException;
+use TaskForce\exceptions\FileFormatException;
 
-require_once 'helpers/functions.php';
-require_once 'helpers/queries.php';
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/../../helpers/functions.php';
+require_once __DIR__ . '/../../helpers/queries.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 
 const MIN_ID = 1;
 $data_array = [];
@@ -33,7 +34,7 @@ $loader_parameters = [
     ]
 ];
 
-$loader = new FileLoader(__DIR__ . '/data/categories.csv',
+$loader = new FileLoader('/data/categories.csv',
     ['name', 'icon']);
 
 foreach ($loader_parameters as $directory => $columns ) {
@@ -82,8 +83,6 @@ foreach ($data_array['tasks'] as $task => $taskValue) {
     $data_array['tasks'][$task][] = generateUniqueRandomNumber(
         MIN_ID, $users_count, $userId);
 }
-
-var_dump($data_array);
 
 try {
     $connect = new DatabaseHelper('localhost','root',
