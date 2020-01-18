@@ -70,6 +70,8 @@ AppAsset::register($this);
             </div>
             <div class="header__town">
 
+<!--                --><?php //var_dump(Yii::$app) ?>
+
             </div>
 
         </div>
