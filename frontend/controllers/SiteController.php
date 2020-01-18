@@ -74,12 +74,12 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-//    public function actionIndex()
-//    {
-//        $cities = City::find()->all();
-//
-//        return $this->render('index', ['cities' => $cities]);
-//    }
+    public function actionIndex()
+    {
+        $cities = City::find()->all();
+
+        return $this->render('index');
+    }
 
     /**
      * Logs in a user.
