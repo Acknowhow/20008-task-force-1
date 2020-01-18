@@ -7,6 +7,8 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
+
+use frontend\models\City;
 use common\widgets\Alert;
 
 AppAsset::register($this);
@@ -69,6 +71,8 @@ AppAsset::register($this);
                     'class' => 'header-nav__list site-list'],) ?>
             </div>
             <div class="header__town">
+
+                <?php var_dump(City::actionList()); ?>
 
 <!--                --><?php //var_dump(Yii::$app) ?>
 

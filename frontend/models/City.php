@@ -5,8 +5,9 @@ use yii\db\ActiveRecord;
 
 class City extends ActiveRecord
 {
-    public static function getAllCities()
+    public static function actionList()
     {
-        return City::find()->all();
+        return City::findBySql('SELECT city FROM city')->
+        asArray()->all();
     }
 }

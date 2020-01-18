@@ -2,8 +2,9 @@
 namespace frontend\controllers;
 
 use yii\web\Controller;
+use frontend\models\City;
 
-class CountryController extends Controller
+class CityController extends Controller
 {
 
 }
