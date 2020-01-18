@@ -3,9 +3,11 @@
 /* @var $content string */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use yii\widgets\ActiveForm;
 use frontend\assets\AppAsset;
 
 use frontend\models\City;
@@ -71,10 +73,22 @@ AppAsset::register($this);
                     'class' => 'header-nav__list site-list'],) ?>
             </div>
             <div class="header__town">
-
-                <?php var_dump(City::actionList()); ?>
-
-<!--                --><?php //var_dump(Yii::$app) ?>
+                <?php
+                $url = Url::to(['site/city']);
+                $form = ActiveForm::begin([
+                    'id' => 'site-form',
+                    'options' => [
+                        'class' => 'site-form'
+                    ],
+                    'action' => $url
+                ]); ?>
+                <select class="multiple-select input town-select" size="1" name="town[]">
+                <?php foreach (City::actionList() as $city => $name): ?>
+                    <option value="<?= $name['city'] ?>"><?= $name['city'] ?></option>
+                <?php endforeach; ?>
+                </select>
+                <input type="submit" hidden name="submit" value="Get Selected Values" />
+                <?php ActiveForm::end(); ?>
 
             </div>
 
