@@ -11,10 +11,10 @@ use yii\widgets\ActiveForm;
 use frontend\assets\AppAsset;
 
 use frontend\models\City;
+use frontend\models\Category;
 use common\widgets\Alert;
 
 AppAsset::register($this);
-
 
 ?>
 <?php $this->beginPage() ?>
@@ -29,6 +29,7 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
+<?php $c = new Category(); $c->findAllNames(); ?>
 
 <div class="table-layout">
     <header class="page-header">
@@ -85,7 +86,7 @@ AppAsset::register($this);
                 ]); ?>
                 <select class="multiple-select input town-select" size="1" name="town[]">
                 <optgroup class="cities-optgroup">
-                <?php foreach (City::actionList() as $city => $name): ?>
+                <?php foreach (City::getCityNameList() as $city => $name): ?>
                     <option class="town-select__option" value="<?= $name['city'] ?>"><?= $name['city'] ?></option>
                 <?php endforeach; ?>
                 </optgroup>
