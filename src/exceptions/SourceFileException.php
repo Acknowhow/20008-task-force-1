@@ -1,5 +1,5 @@
 <?php
-namespace TaskForce\Exceptions;
+namespace TaskForce\exceptions;
 
 class SourceFileException extends \Exception
 {

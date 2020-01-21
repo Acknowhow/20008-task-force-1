@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace TaskForce\Utils;
 
-use TaskForce\Exceptions\FileFormatException;
-use TaskForce\Exceptions\SourceFileException;
+use TaskForce\exceptions\FileFormatException;
+use TaskForce\exceptions\SourceFileException;
 
 class FileLoader
 {
