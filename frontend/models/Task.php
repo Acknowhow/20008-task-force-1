@@ -1,28 +1,43 @@
 <?php
 namespace frontend\models;
-
 use yii\db\ActiveRecord;
 
-class User extends ActiveRecord
+class Task extends ActiveRecord
 {
     /** Saves or updates existing table
-     * @param string $name
-     * @param string $password
-     * @param string $email
      * @param string $dtAdd
-     * @param int $cityId
+     * @param int $categoryId
+     * @param string $description
+     * @param string $expire
+     * @param string $name
+     * @param string $address
+     * @param int $budget
+     * @param float $lat
+     * @param float $long
+     * @param int $clientId
+     * @param int $contractorId
      * @return void
      */
     public static function saveModel(
-        string $name, string $password,
-        string $email, string $dtAdd, int $cityId): void
+        string $dtAdd, int $categoryId,
+        string $description, string $expire,
+
+        string $name, string $address,
+        int $budget, float $lat, float $long,
+        int $clientId, int $contractorId): void
     {
         $props = [
-            'name' => $name,
-            'password' => $password,
-            'email' => $email,
             'dtAdd' => $dtAdd,
-            'cityId' => $cityId
+            'categoryId' => $categoryId,
+            'description' => $description,
+            'expire' => $expire,
+            'name' => $name,
+            'address' => $address,
+            'budget' => $budget,
+            'lat' => $lat,
+            'long' => $long,
+            'clientId' => $clientId,
+            'contractorId' => $contractorId
         ];
         $city = new self();
         $city->attributes = $props;
@@ -33,7 +48,7 @@ class User extends ActiveRecord
      * @param int userId
      * @return object User
      */
-    public static function getUser(int $id): object
+    public static function getTask(int $id): object
     {
         return self::findOne(['id' => $id]);
     }
@@ -47,7 +62,6 @@ class User extends ActiveRecord
         return $this->hasOne(City::class,
             ['id' => 'city_id']);
     }
-
     /**
      * Required method to make massive assignment possible
      */

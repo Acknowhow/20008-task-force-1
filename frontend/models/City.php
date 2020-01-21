@@ -30,7 +30,6 @@ class City extends ActiveRecord
         return self::findBySql('SELECT city FROM city')->
         asArray()->all();
     }
-
     /**
      * Required method to make massive assignment possible
      * @return array of rules

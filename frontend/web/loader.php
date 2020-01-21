@@ -28,7 +28,8 @@ $loader_parameters = [
         'phone', 'skype'
     ],
     '/data/replies.csv' => ['dt_add', 'rate', 'description'],
-    '/data/tasks.csv' => ['dt_add', 'category_id', 'description',
+    '/data/tasks.csv' => [
+        'dt_add', 'category_id', 'description',
         'expire', 'name', 'address', 'budget', 'lat', 'long'
     ],
     '/data/users.csv' => ['email', 'name', 'password', 'dt_add'
