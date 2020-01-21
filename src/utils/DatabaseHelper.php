@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace TaskForce\Utils;
-require_once 'helpers/functions.php';
+require_once '../../helpers/functions.php';
 
 class DatabaseHelper
 {

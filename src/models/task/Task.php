@@ -1,8 +1,8 @@
 <?php
-namespace TaskForce\Models\Task;
-use TaskForce\Models\Task\Visitor\Concrete\AbstractAction;
-use TaskForce\Exceptions\TaskArgumentException;
-use TaskForce\Exceptions\TaskActionException;
+namespace TaskForce\models\Task;
+use TaskForce\models\Task\Visitor\Concrete\AbstractAction;
+use TaskForce\exceptions\TaskArgumentException;
+use TaskForce\exceptions\TaskActionException;
 
 class Task
 {

@@ -1,5 +1,5 @@
 <?php
-namespace TaskForce\Models\Task\Visitor\Concrete;
+namespace TaskForce\models\Task\Visitor\Concrete;
 
 abstract class AbstractAction
 {
