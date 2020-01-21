@@ -19,7 +19,7 @@ class City extends ActiveRecord
             'long' => $long,
             'lat' => $lat
         ];
-        $city = new City();
+        $city = new self();
         $city->attributes = $props;
 
         $city->save();
@@ -27,7 +27,7 @@ class City extends ActiveRecord
 
     public static function getCityNameList(): array
     {
-        return City::findBySql('SELECT city FROM city')->
+        return self::findBySql('SELECT city FROM city')->
         asArray()->all();
     }
 

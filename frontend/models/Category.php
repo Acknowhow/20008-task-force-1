@@ -5,14 +5,15 @@ use yii\db\ActiveRecord;
 
 class Category extends ActiveRecord
 {
-    public function saveCategoryRecord(string $name, string $icon): void
+    public function saveCategoryRecord(
+        string $name, string $icon): void
     {
         $props = [
           'name' => $name,
           'icon' => $icon
         ];
 
-        $category = new Category();
+        $category = new self();
         $category->attributes = $props;
 
         $category->save();
@@ -20,7 +21,7 @@ class Category extends ActiveRecord
 
     public function findAllNames()
     {
-        $contacts = Category::findAll(['name' => 'Дудеть']);
+        $contacts = self::findAll(['name' => 'Дудеть']);
         foreach ($contacts as $contact) {
             print($contact->name);
         }

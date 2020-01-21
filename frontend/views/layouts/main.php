@@ -12,6 +12,7 @@ use frontend\assets\AppAsset;
 
 use frontend\models\City;
 use frontend\models\Category;
+use frontend\models\User;
 use common\widgets\Alert;
 
 AppAsset::register($this);
@@ -117,7 +118,7 @@ AppAsset::register($this);
                          alt="Аватар пользователя">
                 </a>
                 <span class="header__account-name">
-                 Василий
+                    <?= User::findOne(2)->name ?>
                 </span>
             </div>
             <div class="account__pop-up">
