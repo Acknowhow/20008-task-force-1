@@ -21,16 +21,16 @@ $cities_insert_sql = 'INSERT INTO `city` (city, lat, `long`) VALUES (?,?,?)';
 $users_drop_sql = 'DROP TABLE IF EXISTS user';
 $users_create_sql = 'CREATE TABLE `user` (
                          `id` INT(11) unsigned AUTO_INCREMENT NOT NULL PRIMARY KEY,
+                         `email` VARCHAR(255),
                          `name` VARCHAR(128),
                          `password` VARCHAR(72),
-                         `email` VARCHAR(255),
                          `dt_add` DATETIME,
                          `city_id` INT unsigned,
                          UNIQUE KEY unique_email(email),
                          FOREIGN KEY (`city_id`) REFERENCES `city`(`id`)
 )';
 $users_insert_sql = 'INSERT INTO `user` (
-                     name, password, email, dt_add, city_id)
+                     email, name, password, dt_add, city_id)
                      VALUES (?,?,?,?,?)';
 
 
