@@ -81,7 +81,7 @@ $profile_create_sql = 'CREATE TABLE `profile` (
                          `about` VARCHAR(1000),
                          `phone` VARCHAR(20),
                          `skype` VARCHAR(50),
-                         `contractor_id` INT  unsigned NOT NULL,
+                         `contractor_id` INT unsigned NOT NULL,
                          FOREIGN KEY (`contractor_id`) REFERENCES `user`(`id`)
 )';
 $profile_insert_sql = 'INSERT INTO `profile` (

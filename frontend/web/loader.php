@@ -16,7 +16,6 @@ require_once __DIR__ . '/../../helpers/queries.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/database/credentials.php';
 
-
 const MIN_ID = 1;
 $data_array = [];
 
@@ -36,44 +35,25 @@ $loader_parameters = [
     ]
 ];
 
-$loader = new FileLoader('/data/profiles.csv',
-    ['name', 'icon']);
+foreach ($loader_parameters as $directory => $columns ) {
+    $loader = new FileLoader(__DIR__ . $directory, $columns);
 
-try {
-    $loader->import();
-    $file = $loader->getData();
-}
-catch (SourceFileException $error) {
-    error_log("Не удалось обработать csv файл: " .
-        $error->getMessage());
-}
-catch (FileFormatException $error) {
-    error_log("Неверная форма файла импорта: " .
-        $error->getMessage());
-}
+    try {
+        $loader->import();
+        $file = $loader->getData();
+    }
+    catch (SourceFileException $error) {
+        error_log("Не удалось обработать csv файл: " .
+            $error->getMessage());
+    }
+    catch (FileFormatException $error) {
+        error_log("Неверная форма файла импорта: " .
+            $error->getMessage());
+    }
 
-$directory = substr($directory, 6, -4);
-$data_array[$directory] = $file;
-
-//foreach ($loader_parameters as $directory => $columns ) {
-//    $loader = new FileLoader(__DIR__ . $directory, $columns);
-//
-//    try {
-//        $loader->import();
-//        $file = $loader->getData();
-//    }
-//    catch (SourceFileException $error) {
-//        error_log("Не удалось обработать csv файл: " .
-//            $error->getMessage());
-//    }
-//    catch (FileFormatException $error) {
-//        error_log("Неверная форма файла импорта: " .
-//            $error->getMessage());
-//    }
-//
-//    $directory = substr($directory, 6, -4);
-//    $data_array[$directory] = $file;
-//}
+    $directory = substr($directory, 6, -4);
+    $data_array[$directory] = $file;
+}
 
 /****** Shuffling with random index access ******
  *
@@ -125,6 +105,12 @@ shuffle($users_ids);
 foreach ($data_array['profiles'] as $profile => $profileValue) {
     $userId = rand(MIN_ID, $users_count - 1);
 
+    $profileKeysCount = count($profileValue);
+
+    while ($profileKeysCount < 5) {
+        $data_array['profiles'][$profile][] = 'default';
+        $profileKeysCount++;
+    }
     /**
      * Adding contractor_ids into profiles
      */
@@ -137,10 +123,16 @@ shuffle($users_ids);
 foreach ($data_array['replies'] as $reply => $replyValue) {
     $userId = rand(MIN_ID, $users_count - 1);
     $taskId = rand(MIN_ID, $tasks_count - 1);
+
+    $replyKeysCount = count($replyValue);
+
+    while ($replyKeysCount < 3) {
+        $data_array['replies'][$reply][] = 'default';
+    }
     /**
      * Adding contractor_ids and task_ids into profiles
      */
-    $data_array['profiles'][$profile][] = $userId;
+    $data_array['replies'][$reply][] = $userId;
     $data_array['replies'][$reply][] = $taskId;
 }
 
@@ -189,10 +181,10 @@ try {
     foreach ($data_array['profiles'] as $profile) {
         $connect->executeQuery($profile_insert_sql, $profile);
     }
-//
-//    foreach ($data_array['replies'] as $reply) {
-//        $connect->executeQuery($reply_insert_sql, $reply);
-//    }
+
+    foreach ($data_array['replies'] as $reply) {
+        $connect->executeQuery($reply_insert_sql, $reply);
+    }
 
 } catch (Exception $error) {
     error_log($error->getMessage());
