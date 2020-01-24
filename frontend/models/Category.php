@@ -6,7 +6,7 @@ use yii\db\ActiveRecord;
 class Category extends ActiveRecord
 {
     public function saveCategoryRecord(
-        string $name, string $icon): void
+        $name, $icon): void
     {
         $props = [
           'name' => $name,
@@ -17,6 +17,15 @@ class Category extends ActiveRecord
         $category->attributes = $props;
 
         $category->save();
+    }
+
+    /**
+     * @param int
+     * @return ActiveRecord
+     */
+    public static function getCity(int $id)
+    {
+        return self::findOne(['id' => $id]);
     }
 
     public function findAllNames()

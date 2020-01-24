@@ -5,7 +5,9 @@ use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
 {
-    /** Saves or updates existing table
+    /**
+     * Saves model with existing params
+     * using mass assignment. Requires rules()
      * @param string $name
      * @param string $password
      * @param string $email
@@ -14,8 +16,8 @@ class User extends ActiveRecord
      * @return void
      */
     public static function saveModel(
-        string $name, string $password,
-        string $email, string $dtAdd, int $cityId): void
+        $name, $password,
+        $email, $dtAdd, $cityId): void
     {
         $props = [
             'name' => $name,
@@ -29,11 +31,11 @@ class User extends ActiveRecord
 
         $city->save();
     }
-    /** Gets user model by id
-     * @param int userId
-     * @return object User
+    /**
+     * @param int
+     * @return ActiveRecord
      */
-    public static function getUser(int $id): object
+    public static function getUser(int $id)
     {
         return self::findOne(['id' => $id]);
     }

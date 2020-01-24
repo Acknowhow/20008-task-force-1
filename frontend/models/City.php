@@ -12,7 +12,7 @@ class City extends ActiveRecord
      * @return void
      */
     public static function saveModel(
-        string $city, float $long, float $lat): void
+        $city, $long, $lat): void
     {
         $props = [
             'city' => $city,
@@ -23,6 +23,15 @@ class City extends ActiveRecord
         $city->attributes = $props;
 
         $city->save();
+    }
+
+    /**
+     * @param int
+     * @return ActiveRecord
+     */
+    public static function getCity(int $id)
+    {
+        return self::findOne(['id' => $id]);
     }
 
     public static function getCityNameList(): array

@@ -3,51 +3,47 @@
 namespace frontend\models;
 
 use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
+use \yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "opinion".
+ * This is the model class for table "reply".
  *
  * @property int $id
  * @property string|null $dt_add
  * @property int|null $rate
  * @property string|null $description
- * @property int $client_id
+ * @property int $contractor_id
  * @property int $task_id
  *
- * @property User $client
+ * @property User $contractor
  * @property Task $task
  */
-class Opinion extends ActiveRecord
+class Reply extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'opinion';
+        return 'reply';
     }
 
     /**
-     * Saves model with existing params
-     * using mass assignment. Requires rules()
      * @param string $dt_add
      * @param int $rate
      * @param string $description
-     * @param int $client_id
+     * @param int $contractor_id
      * @param int $task_id
-     * @return void
      */
-
     public static function saveModel(
-        $dt_add, $rate,
-        $description, $client_id, $task_id): void
+        $dt_add, $rate, $description,
+        $contractor_id, $task_id): void
     {
         $props = [
             'dt_add' => $dt_add,
-            'rate' => $rate,
+            '$task_id' => $rate,
             'description' => $description,
-            'client_id' => $client_id,
+            'contractor_id' => $contractor_id,
             'task_id' => $task_id
         ];
         $city = new self();
@@ -60,7 +56,7 @@ class Opinion extends ActiveRecord
      * @param int
      * @return ActiveRecord
      */
-    public static function getOpinion(int $id)
+    public static function getReply(int $id)
     {
         return self::findOne(['id' => $id]);
     }
@@ -72,10 +68,10 @@ class Opinion extends ActiveRecord
     {
         return [
             [['dt_add'], 'safe'],
-            [['rate', 'client_id', 'task_id'], 'integer'],
-            [['client_id', 'task_id'], 'required'],
-            [['description'], 'string', 'max' => 1500],
-            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['client_id' => 'id']],
+            [['rate', 'contractor_id', 'task_id'], 'integer'],
+            [['contractor_id', 'task_id'], 'required'],
+            [['description'], 'string', 'max' => 1000],
+            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['contractor_id' => 'id']],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
         ];
     }
@@ -90,7 +86,7 @@ class Opinion extends ActiveRecord
             'dt_add' => 'Dt Add',
             'rate' => 'Rate',
             'description' => 'Description',
-            'client_id' => 'Client ID',
+            'contractor_id' => 'Contractor ID',
             'task_id' => 'Task ID',
         ];
     }
@@ -98,9 +94,9 @@ class Opinion extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getClient()
+    public function getContractor()
     {
-        return $this->hasOne(User::className(), ['id' => 'client_id']);
+        return $this->hasOne(User::className(), ['id' => 'contractor_id']);
     }
 
     /**

@@ -15,6 +15,7 @@ use frontend\models\Category;
 use frontend\models\User;
 
 use frontend\models\Opinion;
+use frontend\models\Task;
 use common\widgets\Alert;
 
 AppAsset::register($this);
@@ -114,6 +115,7 @@ AppAsset::register($this);
                 </p>
             </div>
             <div class="header__account">
+                <?php Task::getTask(3)->opinions;?>
                 <a class="header__account-photo">
                     <img src="img/user-photo.png"
                          width="43" height="44"
