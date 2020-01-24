@@ -13,6 +13,8 @@ use frontend\assets\AppAsset;
 use frontend\models\City;
 use frontend\models\Category;
 use frontend\models\User;
+
+use frontend\models\Opinion;
 use common\widgets\Alert;
 
 AppAsset::register($this);

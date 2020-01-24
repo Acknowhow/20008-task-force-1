@@ -2,7 +2,7 @@
 namespace frontend\models;
 use yii\db\ActiveRecord;
 
-class Task extends ActiveRecord
+class Task_copy extends ActiveRecord
 {
     /** Saves or updates existing table
      * @param string $dtAdd
@@ -18,6 +18,7 @@ class Task extends ActiveRecord
      * @param int $contractorId
      * @return void
      */
+
     public static function saveModel(
         string $dtAdd, int $categoryId,
         string $description, string $expire,
@@ -44,6 +45,7 @@ class Task extends ActiveRecord
 
         $city->save();
     }
+
     /** Gets user model by id
      * @param int userId
      * @return object User

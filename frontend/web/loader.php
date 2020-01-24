@@ -75,7 +75,6 @@ shuffle($users_ids);
 
 foreach ($data_array['tasks'] as $task => $taskValue) {
     $userId = rand(MIN_ID, $users_count - 1);
-
     /**
      * Adding client_ids and contractor_ids into tasks
      */
@@ -83,11 +82,11 @@ foreach ($data_array['tasks'] as $task => $taskValue) {
     $data_array['tasks'][$task][] = generateUniqueRandomNumber(
         MIN_ID, $users_count, $userId);
 }
+
 $tasks_count = count($data_array['tasks']);
 $tasks_ids = range(MIN_ID, $tasks_count);
 shuffle($tasks_ids);
 shuffle($users_ids);
-
 
 foreach ($data_array['opinions'] as $opinion => $opinionValue) {
     $userId = rand(MIN_ID, $users_count - 1);
@@ -104,7 +103,6 @@ shuffle($users_ids);
 
 foreach ($data_array['profiles'] as $profile => $profileValue) {
     $userId = rand(MIN_ID, $users_count - 1);
-
     $profileKeysCount = count($profileValue);
 
     while ($profileKeysCount < 5) {
@@ -136,11 +134,9 @@ foreach ($data_array['replies'] as $reply => $replyValue) {
     $data_array['replies'][$reply][] = $taskId;
 }
 
-
 try {
     $connect = new DatabaseHelper('localhost','root',
         'testpassword2021', 'task_force');
-
 
     $connect->executeQuery($reply_drop_sql);
     $connect->executeQuery($profile_drop_sql);
