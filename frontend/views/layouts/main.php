@@ -11,10 +11,14 @@ use yii\widgets\ActiveForm;
 use frontend\assets\AppAsset;
 
 use frontend\models\City;
+use frontend\models\Category;
+use frontend\models\User;
+
+use frontend\models\Opinion;
+use frontend\models\Task;
 use common\widgets\Alert;
 
 AppAsset::register($this);
-
 
 ?>
 <?php $this->beginPage() ?>
@@ -29,6 +33,7 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
+<?php $c = new Category(); $c->findAllNames(); ?>
 
 <div class="table-layout">
     <header class="page-header">
@@ -85,7 +90,7 @@ AppAsset::register($this);
                 ]); ?>
                 <select class="multiple-select input town-select" size="1" name="town[]">
                 <optgroup class="cities-optgroup">
-                <?php foreach (City::actionList() as $city => $name): ?>
+                <?php foreach (City::getCityNameList() as $city => $name): ?>
                     <option class="town-select__option" value="<?= $name['city'] ?>"><?= $name['city'] ?></option>
                 <?php endforeach; ?>
                 </optgroup>
@@ -110,13 +115,14 @@ AppAsset::register($this);
                 </p>
             </div>
             <div class="header__account">
+                <?php Task::getTask(3)->opinions;?>
                 <a class="header__account-photo">
                     <img src="img/user-photo.png"
                          width="43" height="44"
                          alt="Аватар пользователя">
                 </a>
                 <span class="header__account-name">
-                 Василий
+                    <?= User::findOne(2)->name ?>
                 </span>
             </div>
             <div class="account__pop-up">
